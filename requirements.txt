@@ -1,0 +1,4 @@
+Flask
+Coverage
+Python-Dotenv
+Flask-Testing
