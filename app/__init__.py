@@ -4,10 +4,28 @@ from flask import Flask
 from logging.handlers import RotatingFileHandler
 
 from config import Config
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+from flask_login import LoginManager
+from flask_bootstrap import Bootstrap
 
-def create_app(app_settings=Config):
+
+db = SQLAlchemy()
+migrate = Migrate()
+login_manager = LoginManager()
+login_manager.login_view = 'login.loginpage'
+login_manager.login_message = ('Please log in to access this page.')
+bootstrap = Bootstrap()
+
+def create_app(config_class=Config):
     app = Flask(__name__)
-    app.config.from_object(app_settings)
+    app.config.from_object(config_class)
+
+    db.init_app(app)
+    migrate.init_app(app, db)
+    login_manager.init_app(app)
+    bootstrap.init_app(app)
+
 
     # Initialize Extensions
 
@@ -17,6 +35,9 @@ def create_app(app_settings=Config):
 
     from app.main import bp as main_bp
     app.register_blueprint(main_bp)
+
+    from app.login import bp as login_bp
+    app.register_blueprint(login_bp)
 
     # Logging
     if not app.debug and not app.config['TESTING']:

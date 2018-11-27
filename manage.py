@@ -30,7 +30,7 @@ def seed_db():
 
 @cli.command()
 def test():
-    tests = unittest.TestLoader().discover('tests', pattern='test*.py')
+    tests = unittest.TestLoader().discover('tests', pattern='authentication*.py')
     result = unittest.TextTestRunner(verbosity=2).run(tests)
     if result.wasSuccesful():
         return 0
@@ -39,7 +39,7 @@ def test():
 
 @cli.command()
 def cov():
-    tests = unittest.TestLoader().discover('tests', pattern='test*.py')
+    tests = unittest.TestLoader().discover('tests', pattern='authentication*.py')
     result = unittest.TextTestRunner(verbosity=2).run(tests)
     if result.wasSuccesful():
         COV.stop()
