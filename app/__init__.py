@@ -13,7 +13,7 @@ from flask_bootstrap import Bootstrap
 db = SQLAlchemy()
 migrate = Migrate()
 login_manager = LoginManager()
-login_manager.login_view = 'login.loginpage'
+login_manager.login_view = 'login.login'
 login_manager.login_message = ('Please log in to access this page.')
 bootstrap = Bootstrap()
 
