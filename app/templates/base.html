@@ -16,7 +16,9 @@
       <div class="collapse navbar-collapse" id="collapsibleNavbar">
         <ul class="nav navbar-nav">
           {% if not current_user.is_anonymous %}
-            <li class="nav-item"><a class="nav-link" href="{{ url_for('login.logout') }}">{{ 'Logout' }}</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('login.users') }}">{{ 'Gebruikersoverzicht' }}</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('login.locations') }}">{{ 'Locatieoverzicht' }}</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('login.logout') }}">{{ 'Logout' }}</a></li>
           {% else %}
             <li class="nav-item"><a class="nav-link" href="{{ url_for('login.login') }}">{{ 'Login' }}</a></li>
           {% endif %}

@@ -40,6 +40,15 @@ class User(UserMixin, db.Model):
         return User.query.get(id)
 
 
+class Location(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(128), index=True, unique=True)
+    building = db.Column(db.String(128), index=True, unique=True)
+
+    def __repr__(self):
+        return '<Location {}>'. format(self.name)
+
+
 @login_manager.user_loader
 def load_user(id):
     return User.query.get(int(id))

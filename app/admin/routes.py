@@ -1,6 +1,6 @@
 from app import db
-from app.admin.forms import RegistrationForm
-from app.models import User
+from app.admin.forms import RegistrationForm, LocationForm
+from app.models import User, Location
 from app.login import bp
 from flask import flash, redirect, url_for, render_template
 from flask_login import login_required
@@ -24,5 +24,26 @@ def register():
         db.session.add(user)
         db.session.commit()
         flash('The new user has been added.')
-        return redirect(url_for('login.register'))
+        return redirect(url_for('login.users'))
     return render_template('admin/register.html', title='Register', form=form)
+
+
+@bp.route('/admin/locations_overview', methods=['GET'])
+@login_required
+def locations():
+    locations = Location.query.all()
+    return render_template(
+        'admin/locations_overview.html', title='Locations overview', locations=locations)
+
+
+@bp.route('/admin/add_location', methods=['GET', 'POST'])
+@login_required
+def add_location():
+    form=LocationForm()
+    if form.validate_on_submit():
+        location = Location(name=form.name.data, building=form.building.data)
+        db.session.add(location)
+        db.session.commit()
+        flash('The new location has been added.')
+        return redirect(url_for('login.locations'))
+    return render_template('admin/add_location.html', title='add_location', form=form)
