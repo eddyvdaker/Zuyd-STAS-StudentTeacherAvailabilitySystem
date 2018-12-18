@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+<div id="overview">
+    <a id="add-button" href="{{ url_for('login.register') }}"><button type="button" class="btn btn-dark">{{ 'Add User' }}</button></a><br><br>
+    <table id="users" class="table table-striped">
+        <tr id="header-row">
+            <th>ID</th>
+            <th>{{ 'Email' }}</th>
+            <th></th>
+        </tr>
+        {% for user in users %}
+            <tr id="row">
+                <td>{{ user.id }}</td>
+                <td>{{ user.email }}</td>
+                <td><a href="{{ url_for('main.index', user_id=user.id) }}">{{ 'Details' }}</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

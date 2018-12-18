@@ -8,6 +8,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_bootstrap import Bootstrap
+from flask_mail import Mail
 
 
 db = SQLAlchemy()
@@ -16,6 +17,7 @@ login_manager = LoginManager()
 login_manager.login_view = 'login.login'
 login_manager.login_message = ('Please log in to access this page.')
 bootstrap = Bootstrap()
+mail = Mail()
 
 def create_app(config_class=Config):
     app = Flask(__name__)
@@ -25,6 +27,7 @@ def create_app(config_class=Config):
     migrate.init_app(app, db)
     login_manager.init_app(app)
     bootstrap.init_app(app)
+    mail.init_app(app)
 
 
     # Initialize Extensions
@@ -38,6 +41,9 @@ def create_app(config_class=Config):
 
     from app.login import bp as login_bp
     app.register_blueprint(login_bp)
+
+    from app.admin import bp as admin_bp
+    app.register_blueprint(admin_bp)
 
     # Logging
     if not app.debug and not app.config['TESTING']:

@@ -7,7 +7,7 @@ from app import db
 from app.login import bp
 from app.login.forms import LoginForm, ResetPasswordRequestForm, \
     ResetPasswordForm, ChangePasswordForm
-# from app.login.email import send_password_reset_email
+from app.email import send_password_reset_email
 
 
 @bp.route('/login', methods=['GET', 'POST'])
@@ -44,9 +44,9 @@ def reset_password_request():
         if user:
             send_password_reset_email(user)
         flash('Check your email for further instructions.')
-        return redirect(url_for('login.loginpage'))
+        return redirect(url_for('login.login'))
     return render_template('default-form.html'
-                           , title='Reset Password', form=form)
+                           ,title='Reset Password', form=form)
 
 
 @bp.route('/reset_password/<token>', methods=['GET', 'POST'])
@@ -61,7 +61,7 @@ def reset_password(token):
         user.set_password(form.password.data)
         db.session.commit()
         flash('Your password has been reset.')
-        return redirect(url_for('login.loginpage'))
+        return redirect(url_for('login.login'))
     return render_template(
         'default-form.html', form=form, title='Reset Password'
     )
