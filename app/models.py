@@ -4,6 +4,7 @@ from flask_login import UserMixin
 import jwt
 from flask import current_app
 from time import time
+from datetime import datetime
 
 
 class User(UserMixin, db.Model):
@@ -11,6 +12,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(128), index=True, unique=True)
     password_hash = db.Column(db.String(128))
     role = db.Column(db.String(128), index=True)
+    checkins = db.relationship('Checkin', backref='User', lazy='dynamic')
 
     def __repr__(self):
         return '<User {}>'. format(self.email)
@@ -45,9 +47,24 @@ class Location(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), index=True, unique=True)
     building = db.Column(db.String(128), index=True, unique=True)
+    checkins = db.relationship('Checkin', backref='Location', lazy='dynamic')
 
     def __repr__(self):
         return '<Location {}>'. format(self.name)
+
+
+class Checkin(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    time = db.Column(db.DateTime)
+    availability = db.Column(db.Boolean, default=False)
+    location_id = db.Column(db.Integer, db.ForeignKey('location.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+    def __repr__(self):
+        return '<Checkin {}>'. format(self.availability)
+
+    def set_time(self):
+        return datetime.utcnow()
 
 
 @login_manager.user_loader
