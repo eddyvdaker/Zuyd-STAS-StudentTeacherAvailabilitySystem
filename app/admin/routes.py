@@ -2,12 +2,14 @@ from app import db
 from app.admin.forms import RegistrationForm, LocationForm
 from app.models import User, Location
 from app.admin import bp
+from app.admin.decorator import admin_required
 from flask import flash, redirect, url_for, render_template
 from flask_login import login_required
 
 
 @bp.route('/admin/users_overview', methods=['GET'])
 @login_required
+@admin_required
 def users():
     users = User.query.all()
     return render_template(
@@ -16,6 +18,7 @@ def users():
 
 @bp.route('/admin/register', methods=['GET', 'POST'])
 @login_required
+@admin_required
 def register():
     form=RegistrationForm()
     if form.validate_on_submit():
@@ -30,6 +33,7 @@ def register():
 
 @bp.route('/admin/locations_overview', methods=['GET'])
 @login_required
+@admin_required
 def locations():
     locations = Location.query.all()
     return render_template(
@@ -38,6 +42,7 @@ def locations():
 
 @bp.route('/admin/add_location', methods=['GET', 'POST'])
 @login_required
+@admin_required
 def add_location():
     form=LocationForm()
     if form.validate_on_submit():
