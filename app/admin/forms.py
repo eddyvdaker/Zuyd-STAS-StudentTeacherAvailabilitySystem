@@ -25,3 +25,8 @@ class LocationForm(FlaskForm):
         location = Location.query.filter_by(Name=name.data).first()
         if location is not None:
             raise ValidationError('Please use a different location name.')
+
+
+class GenerateForm(FlaskForm):
+    Name = StringField('Location name', validators=[DataRequired()])
+    submit = SubmitField('Add')

@@ -1,5 +1,5 @@
 from app import db
-from app.admin.forms import RegistrationForm, LocationForm
+from app.admin.forms import RegistrationForm, LocationForm, GenerateForm
 from app.models import User, Location
 from app.admin import bp
 from app.admin.decorator import admin_required
@@ -52,3 +52,15 @@ def add_location():
         flash('The new location has been added.')
         return redirect(url_for('admin.locations'))
     return render_template('admin/add_location.html', title='add_location', form=form)
+
+
+@bp.route('/admin/generate_qr', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def generate_qr():
+    form=GenerateForm()
+    if form.validate_on_submit():
+        flash('The QR-code has been generated.')
+        return redirect(url_for('main.index'))
+    return render_template(
+        'admin/generate_qr.html', title='Generate QR-code', form=form)
