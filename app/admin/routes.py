@@ -1,7 +1,7 @@
 from app import db
 from app.admin.forms import RegistrationForm, LocationForm
 from app.models import User, Location
-from app.login import bp
+from app.admin import bp
 from flask import flash, redirect, url_for, render_template
 from flask_login import login_required
 
@@ -24,7 +24,7 @@ def register():
         db.session.add(user)
         db.session.commit()
         flash('The new user has been added.')
-        return redirect(url_for('login.users'))
+        return redirect(url_for('admin.users'))
     return render_template('admin/register.html', title='Register', form=form)
 
 
@@ -45,5 +45,5 @@ def add_location():
         db.session.add(location)
         db.session.commit()
         flash('The new location has been added.')
-        return redirect(url_for('login.locations'))
+        return redirect(url_for('admin.locations'))
     return render_template('admin/add_location.html', title='add_location', form=form)
