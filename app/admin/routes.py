@@ -5,6 +5,8 @@ from app.admin import bp
 from app.admin.decorator import admin_required
 from flask import flash, redirect, url_for, render_template
 from flask_login import login_required
+import pyqrcode
+import os
 
 
 @bp.route('/admin/users_overview', methods=['GET'])
@@ -49,6 +51,11 @@ def add_location():
         location = Location(name=form.name.data, building=form.building.data)
         db.session.add(location)
         db.session.commit()
+
+        qr_info = form.name.data
+        qr = pyqrcode.create(qr_info)
+        qr.svg("app/qr_codes/" + qr_info + ".svg", scale=6)
+
         flash('The new location has been added.')
         return redirect(url_for('admin.locations'))
     return render_template('admin/add_location.html', title='add_location', form=form)
