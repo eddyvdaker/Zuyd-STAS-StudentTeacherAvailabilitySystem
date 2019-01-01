@@ -18,6 +18,17 @@ def users():
         'admin/users_overview.html', title='Users overview', users=users)
 
 
+@bp.route('/admin/user/<user_id>', methods=['GET'])
+@login_required
+@admin_required
+def user_overview(user_id):
+    user = User.query.filter_by(id=user_id).first()
+    return render_template(
+        'admin/user_overview.html', user=user,
+        title='Admin Panel: User ' + str(user_id)
+    )
+
+
 @bp.route('/admin/register', methods=['GET', 'POST'])
 @login_required
 @admin_required

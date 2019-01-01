@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+<div id="user">
+  <ul>
+    <li><strong>{{ 'Email' }}:</strong> {{ user.email }}</li>
+    <li><strong>{{ 'Role' }}:</strong> {{ user.role }}</li>
+    <li><a href="{{ url_for('main.index', user_id=user.id) }}">{{ 'Edit User' }}</a></li>
+  </ul>
+</div>
+{% endblock %}
