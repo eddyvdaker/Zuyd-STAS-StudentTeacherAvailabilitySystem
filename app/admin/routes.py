@@ -74,16 +74,19 @@ def add_location():
         db.session.add(location)
         db.session.commit()
 
-        qr_info = form.name.data
-        qr = pyqrcode.create(qr_info)
-        qr.svg("app/qr_codes/" + qr_info + ".svg", scale=6)
+        qr_name = form.name.data
+        location_id = Location.query.filter_by(name=location.name).first()
+        qr_id = location_id.id
+        #qr = pyqrcode.create(qr_info)
+        qr = pyqrcode.create('127.0.0.1:5000/locations/'+ str(qr_id))
+        qr.svg("app/qr_codes/" + qr_name + ".svg", scale=6)
 
         flash('The new location has been added.')
         return redirect(url_for('admin.locations'))
     return render_template('admin/add_location.html', title='add_location', form=form)
 
 
-@bp.route('/admin/generate_qr', methods=['GET', 'POST'])
+""" @bp.route('/admin/generate_qr', methods=['GET', 'POST'])
 @login_required
 @admin_required
 def generate_qr():
@@ -92,4 +95,4 @@ def generate_qr():
         flash('The QR-code has been generated.')
         return redirect(url_for('main.index'))
     return render_template(
-        'admin/generate_qr.html', title='Generate QR-code', form=form)
+        'admin/generate_qr.html', title='Generate QR-code', form=form) """

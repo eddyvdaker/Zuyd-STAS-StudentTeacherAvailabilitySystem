@@ -12,7 +12,6 @@ from flask_login import login_required
 def new_checkin(location_id):
     form=CheckinForm()
     if form.validate_on_submit():
-        location = Location.query.filter_by(id=location_id).first()
         checkin = Checkin(user_id=form.id.data,
                           availability=form.availability.data,
                           time = datetime.utcnow(),
