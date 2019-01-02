@@ -1,18 +1,22 @@
 from app import db
 from app.checkin import bp
 from app.checkin.forms import CheckinForm
-from app.models import Checkin
+from app.models import Checkin, Location
 from flask import flash, redirect, url_for, render_template
 from datetime import datetime
+from flask_login import login_required
 
 
-@bp.route('/checkin/new_checkin', methods=['GET', 'POST'])
-def new_checkin():
+@bp.route('/checkin/location/<location_id>', methods=['GET', 'POST'])
+@login_required
+def new_checkin(location_id):
     form=CheckinForm()
     if form.validate_on_submit():
+        location = Location.query.filter_by(id=location_id).first()
         checkin = Checkin(user_id=form.id.data,
                           availability=form.availability.data,
-                          time = datetime.utcnow())
+                          time = datetime.utcnow(),
+                          location_id = location_id)
         db.session.add(checkin)
         db.session.commit()
         flash('You are now checked in.')
