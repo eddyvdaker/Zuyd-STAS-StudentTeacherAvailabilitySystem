@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+<div id="location">
+  <ul>
+    <li><strong>{{ 'Name' }}:</strong> {{ location.name }}</li>
+    <li><strong>{{ 'Building' }}:</strong> {{ location.building }}</li>
+    <li><a href="{{ url_for('main.index', location_id=location.id) }}">{{ 'Edit Location' }}</a></li>
+  </ul>
+</div>
+{% endblock %}

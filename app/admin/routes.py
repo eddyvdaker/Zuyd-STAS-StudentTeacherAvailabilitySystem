@@ -53,6 +53,17 @@ def locations():
         'admin/locations_overview.html', title='Locations overview', locations=locations)
 
 
+@bp.route('/admin/location/<location_id>', methods=['GET'])
+@login_required
+@admin_required
+def location_overview(location_id):
+    location = Location.query.filter_by(id=location_id).first()
+    return render_template(
+        'admin/location_overview.html', location=location,
+        title='Admin Panel: Location ' + str(location_id)
+    )
+
+
 @bp.route('/admin/add_location', methods=['GET', 'POST'])
 @login_required
 @admin_required

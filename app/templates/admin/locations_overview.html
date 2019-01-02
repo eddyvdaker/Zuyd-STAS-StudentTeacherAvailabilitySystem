@@ -15,7 +15,7 @@
                 <td>{{ location.id }}</td>
                 <td>{{ location.name }}</td>
                 <td>{{ location.building }}</td>
-                <td><a href="{{ url_for('main.index', location_id=location.id) }}">{{ 'Details' }}</a></td>
+                <td><a href="{{ url_for('admin.location_overview', location_id=location.id) }}">{{ 'Details' }}</a></td>
             </tr>
         {% endfor %}
     </table>
