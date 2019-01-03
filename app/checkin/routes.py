@@ -1,7 +1,7 @@
 from app import db
 from app.checkin import bp
 from app.checkin.forms import CheckinForm
-from app.models import Checkin, Location
+from app.models import Checkin, Location, User
 from flask import flash, redirect, url_for, render_template
 from datetime import datetime
 from flask_login import login_required
@@ -12,7 +12,8 @@ from flask_login import login_required
 def new_checkin(location_id):
     form=CheckinForm()
     if form.validate_on_submit():
-        checkin = Checkin(user_id=form.id.data,
+        user_id = User.query.filter_by(email=form.email.data).first().id
+        checkin = Checkin(user_id=user_id,
                           availability=form.availability.data,
                           time = datetime.utcnow(),
                           location_id = location_id)

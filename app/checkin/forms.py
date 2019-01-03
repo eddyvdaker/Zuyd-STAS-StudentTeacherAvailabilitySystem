@@ -5,6 +5,6 @@ from app.models import Checkin
 
 
 class CheckinForm(FlaskForm):
-    id = StringField('ID-nummer', validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired()])
     availability = BooleanField('Beschikbaar?')
     submit = SubmitField('Add')
