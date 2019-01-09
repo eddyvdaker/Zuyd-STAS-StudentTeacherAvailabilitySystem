@@ -6,11 +6,12 @@
 
 from app import db
 from app.admin.forms import RegistrationForm, LocationForm
-from app.models import User, Location
+from app.models import User, Location, Checkin
 from app.admin import bp
 from app.admin.decorator import admin_required
 from flask import flash, redirect, url_for, render_template
 from flask_login import login_required
+from datetime import datetime
 import pyqrcode
 
 
@@ -46,6 +47,11 @@ def register():
         user = User(email=form.email.data, role=form.role.data)
         user.set_password(form.password.data)
         db.session.add(user)
+        user_id=User.query.filter_by(email=form.email.data).first().id
+        checkin = Checkin(user_id=user_id,
+                          availability=False,
+                          time = datetime.utcnow())
+        db.session.add(checkin)
         db.session.commit()
         flash('The new user has been added.')
         return redirect(url_for('admin.users'))

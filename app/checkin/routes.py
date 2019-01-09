@@ -7,7 +7,7 @@
 from app import db
 from app.checkin import bp
 from app.checkin.forms import CheckinForm
-from app.models import Checkin, Location, User
+from app.models import Checkin, User
 from flask import flash, redirect, url_for, render_template
 from datetime import datetime
 from flask_login import login_required
