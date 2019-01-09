@@ -1,3 +1,9 @@
+"""
+    app.admin.decorator
+    ===============
+    Decorator which checks if the current user is an admin
+"""
+
 from functools import wraps
 from flask import abort, g
 from flask_login import current_user

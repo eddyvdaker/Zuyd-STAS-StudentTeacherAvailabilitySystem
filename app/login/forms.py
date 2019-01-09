@@ -1,9 +1,16 @@
+"""
+    app.login.forms
+    ===============
+    Forms used to login
+"""
+
 from wtforms import BooleanField, PasswordField, StringField, SubmitField
 from flask_wtf import FlaskForm
 from wtforms.validators import DataRequired, Email, EqualTo
 
 
 class LoginForm(FlaskForm):
+    """Form for logging in"""
     email = StringField('Email', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
     remember_me = BooleanField('Remember me')

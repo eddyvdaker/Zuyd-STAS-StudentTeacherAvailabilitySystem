@@ -1,3 +1,9 @@
+"""
+    app.checkin.routes
+    ===============
+    Routes used for adding checkins
+"""
+
 from app import db
 from app.checkin import bp
 from app.checkin.forms import CheckinForm
@@ -10,6 +16,7 @@ from flask_login import login_required
 @bp.route('/checkin/location/<location_id>', methods=['GET', 'POST'])
 @login_required
 def new_checkin(location_id):
+    """Add new checkin"""
     form=CheckinForm()
     if form.validate_on_submit():
         user_id = User.query.filter_by(email=form.email.data).first().id

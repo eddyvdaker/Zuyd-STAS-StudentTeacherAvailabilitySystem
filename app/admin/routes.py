@@ -1,18 +1,24 @@
+"""
+    app.admin.routes
+    ===============
+    Routes used for the admin panel
+"""
+
 from app import db
-from app.admin.forms import RegistrationForm, LocationForm, GenerateForm
+from app.admin.forms import RegistrationForm, LocationForm
 from app.models import User, Location
 from app.admin import bp
 from app.admin.decorator import admin_required
 from flask import flash, redirect, url_for, render_template
 from flask_login import login_required
 import pyqrcode
-import os
 
 
 @bp.route('/admin/users_overview', methods=['GET'])
 @login_required
 @admin_required
 def users():
+    """Overview of all registered users"""
     users = User.query.all()
     return render_template(
         'admin/users_overview.html', title='Users overview', users=users)
@@ -22,6 +28,7 @@ def users():
 @login_required
 @admin_required
 def user_overview(user_id):
+    """Overview of a specific user"""
     user = User.query.filter_by(id=user_id).first()
     return render_template(
         'admin/user_overview.html', user=user,
@@ -33,6 +40,7 @@ def user_overview(user_id):
 @login_required
 @admin_required
 def register():
+    """Register user"""
     form=RegistrationForm()
     if form.validate_on_submit():
         user = User(email=form.email.data, role=form.role.data)
@@ -48,6 +56,7 @@ def register():
 @login_required
 @admin_required
 def locations():
+    """Overview of all added locations"""
     locations = Location.query.all()
     return render_template(
         'admin/locations_overview.html', title='Locations overview', locations=locations)
@@ -57,6 +66,7 @@ def locations():
 @login_required
 @admin_required
 def location_overview(location_id):
+    """Overview of a specific location"""
     location = Location.query.filter_by(id=location_id).first()
     return render_template(
         'admin/location_overview.html', location=location,
@@ -68,6 +78,7 @@ def location_overview(location_id):
 @login_required
 @admin_required
 def add_location():
+    """Add location"""
     form=LocationForm()
     if form.validate_on_submit():
         location = Location(name=form.name.data, building=form.building.data)
@@ -83,15 +94,3 @@ def add_location():
         flash('The new location has been added.')
         return redirect(url_for('admin.locations'))
     return render_template('admin/add_location.html', title='add_location', form=form)
-
-
-""" @bp.route('/admin/generate_qr', methods=['GET', 'POST'])
-@login_required
-@admin_required
-def generate_qr():
-    form=GenerateForm()
-    if form.validate_on_submit():
-        flash('The QR-code has been generated.')
-        return redirect(url_for('main.index'))
-    return render_template(
-        'admin/generate_qr.html', title='Generate QR-code', form=form) """

@@ -1,3 +1,9 @@
+"""
+    app.login.routes
+    ===============
+    Routes used for logging in
+"""
+
 from flask import render_template, url_for, redirect, flash, request
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User
@@ -12,6 +18,7 @@ from app.email import send_password_reset_email
 
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
+    """Login"""
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))
     form = LoginForm()
@@ -30,6 +37,7 @@ def login():
 
 @bp.route('/logout')
 def logout():
+    """Logout"""
     logout_user()
     return redirect(url_for('main.index'))
 

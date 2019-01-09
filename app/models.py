@@ -1,3 +1,9 @@
+"""
+    app.models
+    ===============
+    Models used to store data in the database
+"""
+
 from app import db, login_manager
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
@@ -8,6 +14,7 @@ from datetime import datetime
 
 
 class User(UserMixin, db.Model):
+    """User model"""
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(128), index=True, unique=True)
     password_hash = db.Column(db.String(128))
@@ -19,11 +26,13 @@ class User(UserMixin, db.Model):
 
 
     def set_password(self, password):
+        """Hash password and save it to db"""
         self.password_hash = generate_password_hash(password)
 
 
 
     def check_password(self, password):
+        """Hash password and check if it's the same as the hash in db"""
         return check_password_hash(self.password_hash, password)
 
 
@@ -44,6 +53,7 @@ class User(UserMixin, db.Model):
 
 
 class Location(UserMixin, db.Model):
+    """Location model"""
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), index=True, unique=True)
     building = db.Column(db.String(128), index=True, unique=True)
@@ -54,6 +64,7 @@ class Location(UserMixin, db.Model):
 
 
 class Checkin(UserMixin, db.Model):
+    """Checkin model"""
     id = db.Column(db.Integer, primary_key=True)
     time = db.Column(db.DateTime)
     availability = db.Column(db.Boolean, default=False)
@@ -64,9 +75,11 @@ class Checkin(UserMixin, db.Model):
         return '<Checkin {}>'. format(self.availability)
 
     def set_time(self):
+        """Set the current_time"""
         return datetime.utcnow()
 
 
 @login_manager.user_loader
 def load_user(id):
+    """Specifiy model used for login"""
     return User.query.get(int(id))
