@@ -13,6 +13,7 @@
             <tr id="row">
                 <td>{{ user.id }}</td>
                 <td>{{ user.email }}</td>
+                <td>{{ user.name }}</td>
                 <td><a href="{{ url_for('admin.user_overview', user_id=user.id) }}">{{ 'Details' }}</a></td>
             </tr>
         {% endfor %}

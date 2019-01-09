@@ -44,7 +44,7 @@ def register():
     """Register user"""
     form=RegistrationForm()
     if form.validate_on_submit():
-        user = User(email=form.email.data, role=form.role.data)
+        user = User(name=form.name.data, email=form.email.data, role=form.role.data)
         user.set_password(form.password.data)
         db.session.add(user)
         user_id=User.query.filter_by(email=form.email.data).first().id

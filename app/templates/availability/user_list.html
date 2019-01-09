@@ -5,12 +5,14 @@
     <table id="users" class="table table-striped">
         <tr id="header-row">
             <th>ID</th>
+            <th>{{ 'Name' }}</th>
             <th>{{ 'Email' }}</th>
             <th></th>
         </tr>
         {% for user in users %}
             <tr id="row">
                 <td>{{ user.id }}</td>
+                <td>{{ user.name }}</td>
                 <td>{{ user.email }}</td>
                 <td><a href="{{ url_for('availability.user_availability', user_id=user.id) }}">{{ 'Details' }}</a></td>
             </tr>

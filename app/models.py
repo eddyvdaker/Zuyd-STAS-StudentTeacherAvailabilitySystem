@@ -16,6 +16,7 @@ from datetime import datetime
 class User(UserMixin, db.Model):
     """User model"""
     id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(128), index=True, unique=True)
     email = db.Column(db.String(128), index=True, unique=True)
     password_hash = db.Column(db.String(128))
     role = db.Column(db.String(128), index=True)

@@ -11,6 +11,7 @@ from app.models import User, Location
 
 class RegistrationForm(FlaskForm):
     """Form for user registration"""
+    name = StringField('Name', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
     password2 = PasswordField(
