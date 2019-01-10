@@ -2,6 +2,7 @@ from flask import jsonify, request
 from app.errors.api import bad_request, unauthorized
 from app.models import User, Key
 from app.api import bp
+from app.api.decorator import api_login_required
 
 
 @bp.route('/api/v1.0/request_key', methods=['POST'])
@@ -18,3 +19,13 @@ def request_key():
         return jsonify(user.generate_key())
     else:
         return unauthorized('wrong emailadress or password')
+
+
+@bp.route('/api/v1.0/users/<int:user_id>')
+@api_login_required
+def get_user(user_id):
+    user = User.query.filter_by(id=user_id).first_or_404()
+    key_str = request.headers.get('Authorization').replace('Bearer ', '')
+    key = Key.query.filter_by(key=key_str).first()
+    is_user = key in user.keys.all()
+    return jsonify(user.to_dict(is_self=is_user, incl_checkins=True))
