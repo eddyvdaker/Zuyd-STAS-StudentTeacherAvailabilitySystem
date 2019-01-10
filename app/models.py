@@ -11,6 +11,7 @@ import jwt
 from flask import current_app
 from time import time
 from datetime import datetime
+from secrets import token_urlsafe
 
 
 class User(UserMixin, db.Model):
@@ -40,15 +41,24 @@ class User(UserMixin, db.Model):
                                 self.checkins.all()]
         return data
 
+    def generate_key(self, description=None):
+        key = Key(
+            key=token_urlsafe(),
+            User=self
+        )
+        if description:
+            key.description = description
+        db.session.add(key)
+        db.session.commit()
+        return key.to_dict()
+
     def set_password(self, password):
         """Hash password and save it to db"""
         self.password_hash = generate_password_hash(password)
 
-
     def check_password(self, password):
         """Hash password and check if it's the same as the hash in db"""
         return check_password_hash(self.password_hash, password)
-
 
     def get_reset_password_token(self, expires_in=600):
         return jwt.encode({'reset_password': self.id, 'exp': time() + expires_in},
