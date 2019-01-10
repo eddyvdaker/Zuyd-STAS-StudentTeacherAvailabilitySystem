@@ -51,6 +51,9 @@ def create_app(config_class=Config):
     from app.availability import bp as availability_bp
     app.register_blueprint(availability_bp)
 
+    from app.api import bp as api_bp
+    app.register_blueprint(api_bp)
+
     # Logging
     if not app.debug and not app.config['TESTING']:
         if not os.path.exists('logs'):
