@@ -21,15 +21,28 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     role = db.Column(db.String(128), index=True)
     checkins = db.relationship('Checkin', backref='User', lazy='dynamic')
+    keys = db.relationship('Key', backref='User', lazy='dynamic')
 
     def __repr__(self):
         return '<User {}>'. format(self.email)
 
+    def to_dict(self, is_self=False, incl_checkins=False):
+        data = {
+            'id': self.id,
+            'name': self.name,
+            'email': self.email,
+            'role': self.role
+        }
+        if is_self:
+            data['keys'] = [k.to_dict() for k in self.keys.all()]
+        if incl_checkins:
+            data['checkins'] = [c.to_dict(incl_location=True) for c in
+                                self.checkins.all()]
+        return data
 
     def set_password(self, password):
         """Hash password and save it to db"""
         self.password_hash = generate_password_hash(password)
-
 
 
     def check_password(self, password):
@@ -53,7 +66,7 @@ class User(UserMixin, db.Model):
         return User.query.get(id)
 
 
-class Location(UserMixin, db.Model):
+class Location(db.Model):
     """Location model"""
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), index=True, unique=True)
@@ -63,8 +76,19 @@ class Location(UserMixin, db.Model):
     def __repr__(self):
         return '<Location {}>'. format(self.name)
 
+    def to_dict(self, incl_checkins=False):
+        data = {
+            'id': self.id,
+            'name': self.name,
+            'building': self.building,
+        }
+        if incl_checkins:
+            data['checkins'] = [c.to_dict(incl_user=True) for c in
+                                self.checkins.all()]
+        return data
 
-class Checkin(UserMixin, db.Model):
+
+class Checkin(db.Model):
     """Checkin model"""
     id = db.Column(db.Integer, primary_key=True)
     time = db.Column(db.DateTime)
@@ -75,9 +99,38 @@ class Checkin(UserMixin, db.Model):
     def __repr__(self):
         return '<Checkin {}>'. format(self.availability)
 
+    def to_dict(self, incl_user=False, incl_location=False):
+        data = {
+            'id': self.id,
+            'time': self.time,
+            'availability': self.availability
+        }
+        if incl_user:
+            data['user'] = self.User.to_dict()
+        if incl_location:
+            data['location'] = self.Location.to_dict()
+        return data
+
     def set_time(self):
         """Set the current_time"""
         return datetime.utcnow()
+
+
+class Key(db.Model):
+    """Api keys"""
+    id = db.Column(db.Integer, primary_key=True)
+    key = db.Column(db.String(254), index=True, unique=True)
+    description = db.Column(db.String(254), default="No description")
+    created_on = db.Column(db.DateTime, default=datetime.utcnow())
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+    def to_dict(self):
+        return {
+            'key': self.key,
+            'description': self.description,
+            'created_on': self.created_on,
+            'user': self.User.email
+        }
 
 
 @login_manager.user_loader
