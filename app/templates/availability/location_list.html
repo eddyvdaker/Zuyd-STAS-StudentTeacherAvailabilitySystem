@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+<div id="overview">
+    <table id="users" class="table table-striped">
+        <tr id="header-row">
+            <th>ID</th>
+            <th>{{ 'Name' }}</th>
+            <th>{{ 'Building' }}</th>
+            <th></th>
+        </tr>
+        {% for location in locations %}
+            <tr id="row">
+                <td>{{ location.id }}</td>
+                <td>{{ location.name }}</td>
+                <td>{{ location.building }}</td>
+                <td><a href="{{ url_for('availability.location_availability', location_id=location.id) }}">{{ 'Details' }}</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

@@ -17,7 +17,8 @@
         <ul class="nav navbar-nav">
           {% if not current_user.is_anonymous %}
           <li class="nav-item"><a class="nav-link" href="{{ url_for('login.logout') }}">{{ 'Logout' }}</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('availability.user_list') }}">{{ 'Beschikbaarheid' }}</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('availability.user_list') }}">{{ 'Beschikbaarheid Gebruiker' }}</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('availability.location_list') }}">{{ 'Beschikbaarheid Locatie' }}</a></li>
             {% if current_user.role == 'admin' %}
               <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.users') }}">{{ 'Gebruikersoverzicht' }}</a></li>
               <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.locations') }}">{{ 'Locatieoverzicht' }}</a></li>

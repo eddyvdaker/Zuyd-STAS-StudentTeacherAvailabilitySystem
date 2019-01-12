@@ -36,3 +36,25 @@ def user_availability(user_id):
         'availability/user_availability.html', user=user,
         location=location, availability=availability, title='Availability'
     )
+
+
+@bp.route('/availability/location_list', methods=['GET'])
+@login_required
+def location_list():
+    """Overview of all registered locations"""
+    locations = Location.query.all()
+    return render_template(
+        'availability/location_list.html', title='Location list',
+        locations=locations)
+
+
+@bp.route('/availability/location/<location_id>', methods=['GET'])
+@login_required
+def location_availability(location_id):
+    """Availability overview of a specific location"""
+    location = Location.query.filter_by(id=location_id).first()
+    present = Checkin.query.filter_by(location_id=location_id).all()
+    present_nr = len(present)
+    return render_template(
+        'availability/location_availability.html', location=location,
+        present_nr=present_nr, title='Availability')
