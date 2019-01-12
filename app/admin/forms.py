@@ -5,8 +5,8 @@
 """
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
-from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
+from wtforms import StringField, PasswordField, SelectField, SubmitField
+from wtforms.validators import ValidationError, DataRequired, EqualTo
 from app.models import User, Location
 
 class RegistrationForm(FlaskForm):
@@ -16,7 +16,10 @@ class RegistrationForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     password2 = PasswordField(
         'Repeat Password', validators=[DataRequired(), EqualTo('password')])
-    role = StringField('Role', validators=[DataRequired()])
+    #role = StringField('Role', validators=[DataRequired()])
+    role = SelectField(u'Role', choices=[('admin', 'admin'),
+                                        ('teacher', 'teacher'),
+                                        ('student', 'student')])
     submit = SubmitField('Register')
 
     def validate_email(self, email):
@@ -28,7 +31,10 @@ class RegistrationForm(FlaskForm):
 class LocationForm(FlaskForm):
     """Form for adding a new location"""
     name = StringField('Name', validators=[DataRequired()])
-    building = StringField('Building', validators=[DataRequired()])
+    #building = StringField('Building', validators=[DataRequired()])
+    building = SelectField(u'Location',
+                           choices=[('Nieuw Eyckholt', 'Nieuw Eyckholt'),
+                                        ('Brightlands SSC', 'Brightlands SSC')])
     submit = SubmitField('Add')
 
     def validate_locationname(self, name):
