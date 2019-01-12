@@ -80,7 +80,7 @@ class Location(db.Model):
     """Location model"""
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), index=True, unique=True)
-    building = db.Column(db.String(128), index=True, unique=True)
+    building = db.Column(db.String(128), index=True)
     checkins = db.relationship('Checkin', backref='Location', lazy='dynamic')
 
     def __repr__(self):

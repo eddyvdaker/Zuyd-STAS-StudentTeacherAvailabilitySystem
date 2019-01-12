@@ -5,7 +5,8 @@
   <ul>
     <li><strong>{{ 'Name' }}:</strong> {{ location.name }}</li>
     <li><strong>{{ 'Building' }}:</strong> {{ location.building }}</li>
-    <li><a href="{{ url_for('main.index', location_id=location.id) }}">{{ 'Edit Location' }}</a></li>
   </ul>
+  <h2>QR-code</h2>
+  <img src="/static/qr_codes/{{ location.id }}.svg" alt="qr code" width="20%" height="auto">
 </div>
 {% endblock %}

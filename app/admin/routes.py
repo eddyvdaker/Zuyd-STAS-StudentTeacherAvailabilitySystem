@@ -91,11 +91,10 @@ def add_location():
         db.session.add(location)
         db.session.commit()
 
-        qr_name = form.name.data
         location_id = Location.query.filter_by(name=location.name).first().id
         qr_url = url_for('checkin.new_checkin', location_id=location_id, _external=True)
         qr = pyqrcode.create(qr_url)
-        qr.svg("app/qr_codes/" + qr_name + ".svg", scale=6)
+        qr.svg("app/static/qr_codes/" + str(location_id) + ".svg", scale=6)
 
         flash('The new location has been added.')
         return redirect(url_for('admin.locations'))
