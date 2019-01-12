@@ -7,5 +7,26 @@
     <li><strong>{{ 'Building' }}:</strong> {{ location.building }}</li>
     <li><strong>{{ 'Current number of people present' }}:</strong> {{ present_nr }}</li>
   </ul>
+  <h2>Currently present</h2>
+      <table id="users" class="table table-striped">
+        <tr id="header-row">
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Availability</th>
+            <th>Time</th>
+            <th></th>
+        </tr>
+        {% for checkin in present %}
+            <tr id="row">
+                <td>{{ checkin.User.id }}</td>
+                <td>{{ checkin.User.name }}</td>
+                <td>{{ checkin.User.email }}</td>
+                <td>{{ checkin.availability }}</td>
+                <td>{{ checkin.time }}</td>
+                <td><a href="{{ url_for('availability.user_availability', user_id=checkin.User.id) }}">{{ 'Details' }}</a></td>
+            </tr>
+        {% endfor %}
+    </table>
 </div>
 {% endblock %}

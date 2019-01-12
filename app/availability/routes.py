@@ -28,7 +28,7 @@ def user_availability(user_id):
     checkin = checkins[-1]
     location = Location.query.filter_by(id=checkin.location_id).first()
     availability = checkin.availability
-    if availability == True:
+    if availability:
         availability="Available"
     else:
         availability="Not available"
@@ -53,8 +53,14 @@ def location_list():
 def location_availability(location_id):
     """Availability overview of a specific location"""
     location = Location.query.filter_by(id=location_id).first()
-    present = Checkin.query.filter_by(location_id=location_id).all()
+    present = []
+
+    for user in User.query.all():
+        last_checkin = user.checkins.all()[-1]
+        if last_checkin in location.checkins.all():
+            present.append(last_checkin)
     present_nr = len(present)
+
     return render_template(
         'availability/location_availability.html', location=location,
-        present_nr=present_nr, title='Availability')
+        present_nr=present_nr, present=present, title='Availability')
