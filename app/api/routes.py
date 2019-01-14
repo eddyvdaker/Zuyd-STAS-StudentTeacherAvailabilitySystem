@@ -1,6 +1,6 @@
 from flask import jsonify, request
 from app.errors.api import bad_request, unauthorized
-from app.models import User, Key, Location
+from app.models import User, Key, Location, Checkin
 from app.api import bp
 from app.api.decorator import api_login_required
 
@@ -36,3 +36,10 @@ def get_user(user_id):
 def get_location(location_id):
     location = Location.query.filter_by(id=location_id).first_or_404()
     return jsonify(location.to_dict(incl_checkins=True))
+
+
+@bp.route('/api/v1.0/checkins/<int:checkin_id>')
+@api_login_required
+def get_checkin(checkin_id):
+    checkin = Checkin.query.filter_by(id=checkin_id).first_or_404()
+    return jsonify(checkin.to_dict(incl_user=True, incl_location=True))
