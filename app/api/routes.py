@@ -44,6 +44,12 @@ def get_location(location_id):
     return jsonify(location.to_dict(incl_checkins=True))
 
 
+@bp.route('/api/v1.0/locations')
+@api_login_required
+def get_locations():
+    return jsonify({'locations': [l.to_dict() for l in Location.query.all()]})
+
+
 @bp.route('/api/v1.0/checkins/<int:checkin_id>')
 @api_login_required
 def get_checkin(checkin_id):
