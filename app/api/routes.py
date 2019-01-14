@@ -31,6 +31,12 @@ def get_user(user_id):
     return jsonify(user.to_dict(is_self=is_user, incl_checkins=True))
 
 
+@bp.route('/api/v1.0/users')
+@api_login_required
+def get_users():
+    return jsonify({'users': [u.to_dict() for u in User.query.all()]})
+
+
 @bp.route('/api/v1.0/locations/<int:location_id>')
 @api_login_required
 def get_location(location_id):
