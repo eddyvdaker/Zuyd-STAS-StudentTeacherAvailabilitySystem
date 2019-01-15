@@ -11,6 +11,6 @@ from wtforms.validators import DataRequired
 
 class CheckinForm(FlaskForm):
     """Form for adding a checkin"""
-    email = StringField('Email', validators=[DataRequired()])
+    #email = StringField('Email', validators=[DataRequired()])
     availability = BooleanField('Beschikbaar?')
     submit = SubmitField('Add')

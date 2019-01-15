@@ -10,7 +10,7 @@ from app.checkin.forms import CheckinForm
 from app.models import Checkin, User
 from flask import flash, redirect, url_for, render_template
 from datetime import datetime
-from flask_login import login_required
+from flask_login import login_required, current_user
 
 
 @bp.route('/checkin/location/<location_id>', methods=['GET', 'POST'])
@@ -19,8 +19,8 @@ def new_checkin(location_id):
     """Add new checkin"""
     form=CheckinForm()
     if form.validate_on_submit():
-        user_id = User.query.filter_by(email=form.email.data).first().id
-        checkin = Checkin(user_id=user_id,
+        #user_id = User.query.filter_by(email=form.email.data).first().id
+        checkin = Checkin(user_id=current_user.id,
                           availability=form.availability.data,
                           time = datetime.utcnow(),
                           location_id = location_id)
