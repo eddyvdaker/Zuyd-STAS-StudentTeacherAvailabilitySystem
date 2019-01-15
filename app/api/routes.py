@@ -3,6 +3,8 @@ from app.errors.api import bad_request, unauthorized
 from app.models import User, Key, Location, Checkin
 from app.api import bp
 from app.api.decorator import api_login_required
+from datetime import datetime
+from app import db
 
 
 @bp.route('/api/v1.0/request_key', methods=['POST'])
@@ -55,3 +57,23 @@ def get_locations():
 def get_checkin(checkin_id):
     checkin = Checkin.query.filter_by(id=checkin_id).first_or_404()
     return jsonify(checkin.to_dict(incl_user=True, incl_location=True))
+
+
+@bp.route('/api/v1.0/post_checkin', methods=['POST'])
+@api_login_required
+def post_checkin():
+    if not request.is_json:
+        return bad_request('json payload expected')
+
+    data = request.get_json()
+    if not {'location', 'user', 'availability'}.issubset(data.keys()):
+        return bad_request('payload must include location, user and '
+                           'availability fields')
+
+    checkin = Checkin(
+        location_id=data['location'], user_id=data['user'],
+        availability=data['availability'], time=datetime.utcnow()
+    )
+    db.session.add(checkin)
+    db.session.commit()
+    return jsonify(checkin.to_dict())

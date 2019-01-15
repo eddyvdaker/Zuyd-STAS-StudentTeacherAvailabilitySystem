@@ -42,6 +42,7 @@ class User(UserMixin, db.Model):
         return data
 
     def generate_key(self, description=None):
+        """Generate key and save it to db"""
         key = Key(
             key=token_urlsafe(),
             User=self
@@ -120,6 +121,7 @@ class Checkin(db.Model):
         if incl_location:
             data['location'] = self.Location.to_dict()
         return data
+
 
     def set_time(self):
         """Set the current_time"""
