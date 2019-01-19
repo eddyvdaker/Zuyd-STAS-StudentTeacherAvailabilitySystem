@@ -5,12 +5,18 @@
 """
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, BooleanField
-from wtforms.validators import DataRequired
+from wtforms import SubmitField, BooleanField, SelectField
+from app.models import Location
 
 
 class CheckinForm(FlaskForm):
+    """Form for adding a checkin when scanning qr"""
+    availability = BooleanField('Beschikbaar?')
+    submit = SubmitField('Add')
+
+
+class AddCheckinForm(FlaskForm):
     """Form for adding a checkin"""
-    #email = StringField('Email', validators=[DataRequired()])
+    location = SelectField('Location')
     availability = BooleanField('Beschikbaar?')
     submit = SubmitField('Add')

@@ -8,7 +8,7 @@
   <nav class="navbar navbar-default">
     <div class="container">
       <div class="navbar-header">
-          <button class="navbar-toggle collapsed" type=""button" data-toggle="collapse" data-target="#collapsibleNavbar">
+          <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
             <span class="navbar-toggler-icon"></span>
           </button>
           <a class="navbar-brand" href="/">STAS</a>
@@ -17,11 +17,12 @@
         <ul class="nav navbar-nav">
           {% if not current_user.is_anonymous %}
           <li class="nav-item"><a class="nav-link" href="{{ url_for('login.logout') }}">{{ 'Logout' }}</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('checkin.add_checkin') }}">{{ 'Beschikbaarheid/Locatie wijzigen' }}</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ url_for('availability.user_list') }}">{{ 'Beschikbaarheid Gebruiker' }}</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('availability.location_list') }}">{{ 'Beschikbaarheid Locatie' }}</a></li>
             {% if current_user.role == 'admin' %}
-              <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.users') }}">{{ 'Gebruikersoverzicht' }}</a></li>
-              <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.locations') }}">{{ 'Locatieoverzicht' }}</a></li>
+              <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.users') }}">{{ 'Admin: Gebruikersoverzicht' }}</a></li>
+              <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.locations') }}">{{ 'Admin: Locatieoverzicht' }}</a></li>
             {% endif %}
           {% else %}
             <li class="nav-item"><a class="nav-link" href="{{ url_for('login.login') }}">{{ 'Login' }}</a></li>
@@ -44,7 +45,7 @@
         </ul>
       {% endif %}
     {% endwith %}
-    <div id="app-content">
+    <div class="container" id="app-content">
       {% block app_content %}{% endblock %}
     </div>
   </div>

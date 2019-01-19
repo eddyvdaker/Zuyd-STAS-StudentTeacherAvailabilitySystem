@@ -9,6 +9,7 @@ from wtforms import StringField, PasswordField, SelectField, SubmitField
 from wtforms.validators import ValidationError, DataRequired, EqualTo
 from app.models import User, Location
 
+
 class RegistrationForm(FlaskForm):
     """Form for user registration"""
     name = StringField('Name', validators=[DataRequired()])
@@ -16,7 +17,6 @@ class RegistrationForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     password2 = PasswordField(
         'Repeat Password', validators=[DataRequired(), EqualTo('password')])
-    #role = StringField('Role', validators=[DataRequired()])
     role = SelectField(u'Role', choices=[('admin', 'admin'),
                                         ('teacher', 'teacher'),
                                         ('student', 'student')])
@@ -31,10 +31,10 @@ class RegistrationForm(FlaskForm):
 class LocationForm(FlaskForm):
     """Form for adding a new location"""
     name = StringField('Name', validators=[DataRequired()])
-    #building = StringField('Building', validators=[DataRequired()])
-    building = SelectField(u'Location',
+    building = SelectField('Location',
                            choices=[('Nieuw Eyckholt', 'Nieuw Eyckholt'),
-                                        ('Brightlands SSC', 'Brightlands SSC')])
+                                    ('Brightlands SSC', 'Brightlands SSC'),
+                                    ('Other', 'Other')])
     submit = SubmitField('Add')
 
     def validate_locationname(self, name):
