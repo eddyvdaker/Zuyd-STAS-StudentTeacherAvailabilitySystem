@@ -36,15 +36,15 @@ def new_checkin(location_id):
 def add_checkin():
     """Add new checkin"""
     form=AddCheckinForm()
-    form.location.choices = [(l.id, l.name) for l in Location.query.all()]
+    form.location.choices = [(str(l.id), l.name) for l in Location.query.all()]
     if form.validate_on_submit():
         checkin = Checkin(user_id=current_user.id,
                           availability=form.availability.data,
                           time=datetime.utcnow(),
-                          location_id=form.location)
+                          location_id=form.location.data)
         db.session.add(checkin)
         db.session.commit()
         flash('De gegevens zijn gewijzigd.')
-
+        return redirect(url_for('main.index'))
     return render_template('checkin/add_checkin.html', title='add checkin',
                            form=form)

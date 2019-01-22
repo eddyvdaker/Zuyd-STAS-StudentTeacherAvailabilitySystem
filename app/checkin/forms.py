@@ -6,7 +6,6 @@
 
 from flask_wtf import FlaskForm
 from wtforms import SubmitField, BooleanField, SelectField
-from app.models import Location
 
 
 class CheckinForm(FlaskForm):
