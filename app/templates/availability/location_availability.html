@@ -22,7 +22,11 @@
                 <td>{{ checkin.User.id }}</td>
                 <td>{{ checkin.User.name }}</td>
                 <td>{{ checkin.User.email }}</td>
-                <td>{{ checkin.availability }}</td>
+                {% if checkin.availability == True %}
+                  <td>Available</td>
+                {% else %}
+                  <td>Not Available</td>
+                {% endif %}
                 <td>{{ checkin.time }}</td>
                 <td><a href="{{ url_for('availability.user_availability', user_id=checkin.User.id) }}">{{ 'Details' }}</a></td>
             </tr>
