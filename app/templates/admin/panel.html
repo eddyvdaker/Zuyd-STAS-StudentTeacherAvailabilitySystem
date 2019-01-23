@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+
+{% block app_content %}
+<ul class="list-unstyled">
+  <li><a href="{{ url_for('admin.users') }}">Gebruikersoverzicht</a></li>
+  <li><a href="{{ url_for('admin.locations') }}">Locatieoverzicht</a></li>
+  <li><a href="{{ url_for('admin.download_data') }}">Download Data</a></li>
+</ul>
+{% endblock %}

@@ -9,10 +9,12 @@ from app.admin.forms import RegistrationForm, LocationForm
 from app.models import User, Location, Checkin
 from app.admin import bp
 from app.admin.decorator import admin_required
-from flask import flash, redirect, url_for, render_template
+from flask import flash, redirect, url_for, render_template, current_app, \
+    send_file, json
 from flask_login import login_required
 from datetime import datetime
 import pyqrcode
+import os
 
 
 @bp.route('/admin/users_overview', methods=['GET'])
@@ -99,3 +101,34 @@ def add_location():
         flash('The new location has been added.')
         return redirect(url_for('admin.locations'))
     return render_template('admin/add_location.html', title='add_location', form=form)
+
+
+@bp.route('/admin/download_data')
+@login_required
+@admin_required
+def download_data():
+    data = {
+        'users': [u.to_dict(incl_checkins=True) for u in User.query.all()],
+        'locations': [l.to_dict(incl_checkins=True) for l in Location.query.all()],
+        'checkins': [c.to_dict(incl_user=True, incl_location=True) for c in Checkin.query.all()]
+    }
+
+    path = os.path.join(current_app.config['EXPORT_FOLDER'], 'export.json')
+    if not os.path.exists(current_app.config['EXPORT_FOLDER']):
+        os.makedirs(current_app.config['EXPORT_FOLDER'])
+    elif os.path.exists(path):
+        os.remove(path)
+
+    with open(path, 'w+') as f:
+        json.dump(data, f, indent=4)
+
+    return send_file(path, mimetype='application/json',
+                     attachment_filename='export.json', as_attachment=True,
+                     cache_timeout=-1)
+
+
+@bp.route('/admin/panel')
+@login_required
+@admin_required
+def admin_panel():
+    return render_template('admin/panel.html')

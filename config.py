@@ -21,3 +21,4 @@ class Config:
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     ADMINS = ['stas.zuyd.stage@gmail.com']
+    EXPORT_FOLDER = os.environ.get('EXPORT_FOLDER') or '/tmp/STAS/'
