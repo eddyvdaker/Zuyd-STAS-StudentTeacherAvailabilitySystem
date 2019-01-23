@@ -3,8 +3,8 @@ import unittest
 
 from flask.cli import FlaskGroup
 
-
-from app import create_app
+from app import create_app, db
+from app.models import User
 
 app = create_app()
 cli = FlaskGroup(create_app=create_app)
@@ -18,14 +18,18 @@ COV.start()
 
 @cli.command()
 def recreate_db():
-    # Recreate DB code here
-    pass
+    db.drop_all()
+    db.create_all()
+    db.session.commit()
 
 
 @cli.command()
 def seed_db():
-    # Seed DB code here
-    pass
+    password = input("Set admin password: ")
+    admin = User(email="admin@mail.com", name="admin", role="admin")
+    admin.set_password(password)
+    db.session.add(admin)
+    db.session.commit()
 
 
 @cli.command()

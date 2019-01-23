@@ -20,7 +20,7 @@ import pyqrcode
 @admin_required
 def users():
     """Overview of all registered users"""
-    users = User.query.all()
+    users = User.query.order_by(User.name).all()
     return render_template(
         'admin/users_overview.html', title='Users overview', users=users)
 
@@ -63,7 +63,7 @@ def register():
 @admin_required
 def locations():
     """Overview of all added locations"""
-    locations = Location.query.all()
+    locations = Location.query.order_by(Location.name).all()
     return render_template(
         'admin/locations_overview.html', title='Locations overview', locations=locations)
 

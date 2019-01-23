@@ -14,7 +14,7 @@ from flask import render_template
 @login_required
 def user_list():
     """Overview of all registered users"""
-    users = User.query.all()
+    users = User.query.order_by(User.name).all()
     return render_template(
         'availability/user_list.html', title='User list', users=users)
 
@@ -42,7 +42,7 @@ def user_availability(user_id):
 @login_required
 def location_list():
     """Overview of all registered locations"""
-    locations = Location.query.all()
+    locations = Location.query.order_by(Location.name).all()
     return render_template(
         'availability/location_list.html', title='Location list',
         locations=locations)
