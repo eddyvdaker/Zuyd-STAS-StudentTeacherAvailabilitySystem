@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 
 {% block app_content %}
+{% if current_user.role == 'admin' %}
+  <meta http-equiv="refresh" content="5">
+{% endif %}
 <div id="location">
   <ul>
     <li><strong>{{ 'Name' }}:</strong> {{ location.name }}</li>
